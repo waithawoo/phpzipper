@@ -1,6 +1,6 @@
 {
     "name": "waithaw/phpzipper",
-    "description": "To zip files and data easily",
+    "description": "To zip/unzip files/folders easily",
     "type": "library",
     "require": {
         "php": ">=7.3"
