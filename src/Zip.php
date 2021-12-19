@@ -3,7 +3,6 @@
 namespace WaiThaw\PhpZipper;
 
 use \ZipArchive;
-use \Exception;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 
@@ -18,7 +17,7 @@ class Zip
     {
     }
 
-    public function createFromFiles($zipfile, $password = null, $files,  $flag = ZipArchive::CREATE)
+    public function createFromFiles($zipfile,  $files,  $password = null ,$flag = ZipArchive::CREATE | ZipArchive::OVERWRITE)
     {
         $zip = self::openZip($zipfile, $flag);
         if (is_array($files)) {
@@ -29,6 +28,11 @@ class Zip
                     $zip->setEncryptionName(basename($file), ZipArchive::EM_AES_256, $password);
                 }
             }
+        }else{
+            $zip->addFile($files, basename($files));
+                if($password != null){
+                    $zip->setEncryptionName(basename($files), ZipArchive::EM_AES_256, $password);
+                }
         }
         
         $zip->close();
@@ -37,7 +41,7 @@ class Zip
         return $this;
     }
 
-    public function createFromDir( $zipfile, $directory, $password = null, $flag = ZipArchive::CREATE)
+    public function createFromDir( $zipfile, $directory, $password = null, $flag = ZipArchive::CREATE | ZipArchive::OVERWRITE)
     {   
         $pathInfo = pathinfo($directory);
             $parentPath = $pathInfo['dirname'];
@@ -51,7 +55,20 @@ class Zip
 
             return $this;
     }
-
+    public function extractTo($zipfile, $destinationPath, $password = null)
+    {
+        $zip = self::openZip($zipfile);
+        
+        if($password != null && $zip->setPassword($password)){
+            $zip->extractTo($destinationPath);
+        }else{
+            $zip->extractTo($destinationPath);
+        }       
+        if($zip->status != 0){
+            throw new ZipException("ERROR : ".$zip->getStatusString());
+        }
+        $zip->close();
+    }
     private static function dir2zip($zip, $directory, $password = null)
     {
 
@@ -59,7 +76,6 @@ class Zip
         foreach ($files as $name => $file)
         {
             $filePath = $file->getRealPath();
-            var_dump($filePath);
             $relativePath = substr($filePath, strlen($directory)+1);
 
             if (!$file->isDir())
@@ -83,8 +99,9 @@ class Zip
     {
         $zip = new ZipArchive();
         $open_zip = $zip->open($zipfile, $flags);
+        
         if ($open_zip !== true) {
-            throw new \Exception("OPEN_ERROR");
+            throw new ZipException("ERROR : Can't Open Zip");
         }
         return $zip;
     }
