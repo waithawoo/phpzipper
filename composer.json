@@ -12,11 +12,12 @@
             "email": "waithawoocw@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
 
     "autoload": {
         "psr-4": {
           "WaiThaw\\PhpZipper\\": "src/"
         }
-    }
+    },
+    "minimum-stability": "dev"
+
 }
