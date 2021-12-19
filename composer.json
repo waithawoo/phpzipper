@@ -1,0 +1,22 @@
+{
+    "name": "waithaw/phpzipper",
+    "description": "To zip files and data easily",
+    "type": "library",
+    "require": {
+        "php": ">=7.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "asahi",
+            "email": "waithawoocw@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+
+    "autoload": {
+        "psr-4": {
+          "WaiThaw\\PhpZipper\\": "src/"
+        }
+    }
+}
