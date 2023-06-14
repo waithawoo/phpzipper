@@ -1,5 +1,5 @@
 {
-    "name": "waithaw/phpzipper",
+    "name": "waithawoo/phpzipper",
     "description": "To zip/unzip files/folders easily",
     "type": "library",
     "require": {
@@ -8,14 +8,14 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "waithaw",
+            "name": "waithawoo",
             "email": "waithawoocw@gmail.com"
         }
     ],
 
     "autoload": {
         "psr-4": {
-          "WaiThaw\\PhpZipper\\": "src/"
+          "WaiThawOo\\PhpZipper\\": "src/"
         }
     },
     "minimum-stability": "dev"

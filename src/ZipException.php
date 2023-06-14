@@ -1,11 +1,11 @@
 <?php
 
-namespace WaiThaw\PhpZipper;
+namespace WaiThawOo\PhpZipper;
 
 /**
  * Class ZipException
  *
- * @package WaiThaw\PhpZipper
+ * @package WaiThawOo\PhpZipper
  */
 class ZipException extends \Exception
 {
