@@ -1,6 +1,6 @@
 <?php
 
-namespace WaiThawOo\PhpZipper;
+namespace WaiThaw\PhpZipper;
 
 use \ZipArchive;
 use RecursiveIteratorIterator;

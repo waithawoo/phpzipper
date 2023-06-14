@@ -1,5 +1,5 @@
 {
-    "name": "waithawoo/phpzipper",
+    "name": "waithaw/phpzipper",
     "description": "To zip/unzip files/folders easily",
     "type": "library",
     "require": {
@@ -15,7 +15,7 @@
 
     "autoload": {
         "psr-4": {
-          "WaiThawOo\\PhpZipper\\": "src/"
+          "WaiThaw\\PhpZipper\\": "src/"
         }
     },
     "minimum-stability": "dev"
