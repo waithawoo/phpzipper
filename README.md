@@ -4,7 +4,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/waithawoo/phpzipper)](https://github.com/waithawoo/phpzipper/network)
 [![GitHub license](https://img.shields.io/github/license/waithawoo/phpzipper)](https://github.com/waithawoo/phpzipper/blob/main/LICENSE)
 
-## To zip/unzip files/folders easily
+## To zip/unzip files/folders easily including password protected
 
 Easy to use PHP's native ZipArchive class
  - **[Installation](#installation)**
