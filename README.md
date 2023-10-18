@@ -1,4 +1,5 @@
 # PHP Zipper
+
 [![GitHub issues](https://img.shields.io/github/issues/waithawoo/phpzipper)](https://github.com/waithawoo/phpzipper/issues)
 [![GitHub stars](https://img.shields.io/github/stars/waithawoo/phpzipper)](https://github.com/waithawoo/phpzipper/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/waithawoo/phpzipper)](https://github.com/waithawoo/phpzipper/network)
@@ -6,15 +7,16 @@
 
 ## To zip/unzip files/folders easily including password protected
 
-Easy to use PHP's native ZipArchive class
- - **[Installation](#installation)**
- - **[Usage](#usage)**
+Created for easy use to zip/unzip including password protected (using PHP's native ZipArchive class)
+
+- **[Installation](#installation)**
+- **[Usage](#usage)**
 
 ## Installation
 
 Install this package via [Composer](https://getcomposer.org/).
 
-```
+```php
 composer require waithaw/phpzipper
 ```
 
@@ -27,52 +29,39 @@ use WaiThaw\PhpZipper\Zip;
 
 $zip = new Zip();
 ```
+
 ### Creating a Zip file from Single file or multiple files with no password
-```
-You can create an archive zip file from single file or multiple files.
 
-1st parameter – output zip path
-2nd parameter – a file or files to be zipped
-3rd parameter – setting a password
-
-e.g. 
-$filelists= [
-    'D:\testfolder\test1.txt',
-    'D:\testfolder\test1folder\test2.txt'
-];
-
-$file = 'D:\testfolder\test1.txt';
-```
 ```php
 $zip->createFromFiles('backup.zip', $file);
-
 //OR
-
 $zip->createFromFiles('backup.zip', $filelists);
 ```
+
 ### Creating a Zip file from Single file or multiple files with password
+
 ```php
-$zip->createFromFiles('backup.zip', $file ,'password');
-
+$zip->createFromFiles('backup.zip', $file, 'password');
 //OR
-
-$zip->createFromFiles('backup.zip', $filelists,'password');
+$zip->createFromFiles('backup.zip', $filelists, 'password');
 ```
-### Creating a Zip file from a directory including sub directories.
+
+### Creating a Zip file from a directory including sub directories
+
 ```php
 // Without a password
-$zip->createFromDir('backup.zip','D:\testfolder');
-
+$zip->createFromDir('backup.zip', 'D:\testfolder');
 // With a password
-$zip->createFromDir('backup.zip','D:\testfolder','password');
+$zip->createFromDir('backup.zip', 'D:\testfolder', 'password');
 ```
+
 ### Extracting a simple or password-protected zip file
+
 ```php
 // Extracting a simple zip file.
-$zip->extractTo('backup.zip','D:\outputpath');
-
+$zip->extractTo('backup.zip', 'D:\outputpath');
 //Extracting a password-protected zip file
-$zip->extractTo('backup.zip','D:\outputpath', 'password');
+$zip->extractTo('backup.zip', 'D:\outputpath', 'password');
 ```
 
 ### Downloading zip files
@@ -80,15 +69,13 @@ $zip->extractTo('backup.zip','D:\outputpath', 'password');
 ```php
 // You can download the zip file at once archiving.
 $zip->createFromFiles('backup.zip', $file)->download();
-
-$zip>createFromDir('backup.zip','D:\testfolder')->download();
+$zip>createFromDir('backup.zip', 'D:\testfolder')->download();
 
 // And you can also delete the zip file after downloaded, by passing ‘delete’ string in download() method.
-
 $zip->createFromFiles('backup.zip', $file)->download('delete');
-
-$zip>createFromDir('backup.zip','D:\testfolder')->download('delete');
+$zip>createFromDir('backup.zip', 'D:\testfolder')->download('delete');
 ```
+
 ## Security
 
 If you discover any security related issues, please email them to [waithawoocw@gmail.com](mailto:waithawoocw@gmail.com) instead of using the issue tracker.
