@@ -69,11 +69,11 @@ $zip->extractTo('backup.zip', 'D:\outputpath', 'password');
 ```php
 // You can download the zip file at once archiving.
 $zip->createFromFiles('backup.zip', $file)->download();
-$zip>createFromDir('backup.zip', 'D:\testfolder')->download();
+$zip->createFromDir('backup.zip', 'D:\testfolder')->download();
 
 // And you can also delete the zip file after downloaded, by passing ‘delete’ string in download() method.
 $zip->createFromFiles('backup.zip', $file)->download('delete');
-$zip>createFromDir('backup.zip', 'D:\testfolder')->download('delete');
+$zip->createFromDir('backup.zip', 'D:\testfolder')->download('delete');
 ```
 
 ## Security
