@@ -10,65 +10,96 @@ class Zip
 {
     private $zip;
 
-
-    private $zipfile;
-
     public function __construct()
     {
     }
 
-    public function createFromFiles($zipfile,  $files,  $password = null ,$flag = ZipArchive::CREATE | ZipArchive::OVERWRITE)
+    public function createFromFiles(string $zipfile, $files, string $password = null, $flag = ZipArchive::CREATE | ZipArchive::OVERWRITE)
     {
-        $zip = self::openZip($zipfile, $flag);
-        if (is_array($files)) {
-            foreach ($files as $file) {
-                // $zip->addFile($file, substr($file,strrpos($file,'/')+1));
-                $zip->addFile($file, basename($file));
-                if($password != null){
-                    $zip->setEncryptionName(basename($file), ZipArchive::EM_AES_256, $password);
+        try {
+            $zip = self::openZip($zipfile, $flag);
+            if (is_array($files)) {
+                foreach ($files as $file) {
+                    // $zip->addFile($file, substr($file,strrpos($file,'/')+1));
+                    $zip->addFile($file, basename($file));
+                    if($password != null){
+                        $zip->setEncryptionName(basename($file), ZipArchive::EM_AES_256, $password);
+                    }
                 }
+            }else{
+                $zip->addFile($files, basename($files));
+                    if($password != null){
+                        $zip->setEncryptionName(basename($files), ZipArchive::EM_AES_256, $password);
+                    }
             }
-        }else{
-            $zip->addFile($files, basename($files));
-                if($password != null){
-                    $zip->setEncryptionName(basename($files), ZipArchive::EM_AES_256, $password);
-                }
+            
+            $zip->close();
+            
+            return $zipfile;
+        } catch (\Exception $e) {
+            throw new ZipException($e->getMessage());
         }
-        
-        $zip->close();
-        $this->zipfile = $zipfile;
-
-        return $this;
     }
 
-    public function createFromDir( $zipfile, $directory, $password = null, $flag = ZipArchive::CREATE | ZipArchive::OVERWRITE)
+    public function createFromDir(string $zipfile, string $directory, string $password = null, $flag = ZipArchive::CREATE | ZipArchive::OVERWRITE)
     {   
-        $pathInfo = pathinfo($directory);
+        try {
+            $pathInfo = pathinfo($directory);
             $parentPath = $pathInfo['dirname'];
             $dirName = $pathInfo['basename'];
-            $zip = self::openZip($zipfile, $flag);
 
+            $zip = self::openZip($zipfile, $flag);
             self::dir2zip($zip, $directory, $password);
+
             $zip->close();
 
-            $this->zipfile = $zipfile;
-
-            return $this;
-    }
-    public function extractTo($zipfile, $destinationPath, $password = null)
-    {
-        $zip = self::openZip($zipfile);
-        
-        if($password != null && $zip->setPassword($password)){
-            $zip->extractTo($destinationPath);
-        }else{
-            $zip->extractTo($destinationPath);
-        }       
-        if($zip->status != 0){
-            throw new ZipException("ERROR : ".$zip->getStatusString());
+            return $zipfile;
+        } catch (\Exception $e) {
+            throw new ZipException($e->getMessage());
         }
-        $zip->close();
     }
+
+    public function extractTo(string $zipfile, string $destinationPath, string $password = null)
+    {
+        try {
+            $zip = self::openZip($zipfile);
+        
+            if($password != null && $zip->setPassword($password)){
+                $zip->extractTo($destinationPath);
+            }else{
+                $zip->extractTo($destinationPath);
+            }       
+            if($zip->status != 0){
+                throw new ZipException("Error : ".$zip->getStatusString());
+            }
+            $zip->close();
+
+            return true;
+        } catch (\Exception $e) {
+            throw new ZipException($e->getMessage());
+        }
+    }
+
+    public function download($unlink = null)
+    {
+        try {
+            header('Content-type: application/zip');
+            header('Content-Disposition: attachment; filename="'.basename($this->zipfile).'"');
+            header("Content-length: " . filesize($this->zipfile));
+            header("Pragma: no-cache");
+            header("Expires: 0");
+            ob_clean();
+            flush();
+            readfile($this->zipfile);
+            if($unlink == 'delete'){
+                unlink($this->zipfile);
+            }
+            exit;
+        } catch (\Exception $e) {
+            throw new ZipException($e->getMessage());
+        }
+    }
+
     private static function dir2zip($zip, $directory, $password = null)
     {
 
@@ -93,36 +124,16 @@ class Zip
                 }
             }
         }
-
     }
+
     private static function openZip($zipfile, $flags = null)
     {
         $zip = new ZipArchive();
         $open_zip = $zip->open($zipfile, $flags);
         
         if ($open_zip !== true) {
-            throw new ZipException("ERROR : Can't Open Zip");
+            throw new ZipException("Error : Can't Open Zip");
         }
         return $zip;
     }
-
-    public function download($unlink = null)
-    {
-        header('Content-type: application/zip');
-        header('Content-Disposition: attachment; filename="'.basename($this->zipfile).'"');
-        header("Content-length: " . filesize($this->zipfile));
-        header("Pragma: no-cache");
-        header("Expires: 0");
-        ob_clean();
-        flush();
-        readfile($this->zipfile);
-        if($unlink == 'delete'){
-            unlink($this->zipfile);
-        }
-        exit;
-
-    }
-
-
-  
 }
